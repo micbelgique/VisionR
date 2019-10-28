@@ -8,9 +8,10 @@ import { GalleryComponent } from './gallery/gallery.component';
 import { NewPicComponent } from './new-pic/new-pic.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
-  MatCardModule, MatInputModule, MatButtonModule
+  MatCardModule, MatInputModule, MatButtonModule, MatTabsModule, MatGridListModule, MatListModule, MatProgressSpinnerModule
  } from '@angular/material';
 import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 @NgModule({
   declarations: [
     AppComponent,
@@ -25,7 +26,12 @@ import { FormsModule } from '@angular/forms';
     MatCardModule,
     MatInputModule,
     FormsModule,
-    MatButtonModule
+    MatButtonModule,
+    HttpClientModule,
+    MatTabsModule,
+    MatGridListModule,
+    MatListModule,
+    MatProgressSpinnerModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -2,3 +2,50 @@
     <input [(ngModel)]="url" matInput placeholder="Enter the url of the picture here">
 </mat-form-field>
 <button mat-raised-button color="primary" class="example-full-width" (click)="addPicture()">Add it!</button>
+<div *ngIf="this.lastUrl">
+    <mat-grid-list cols="2" rowHeight="2:1">
+        <mat-grid-tile>
+            <img style="width: 60%;" [src]="this.lastUrl">
+        </mat-grid-tile>
+        <div *ngIf="this.dataFromVision">
+            <mat-grid-tile>
+                    <mat-tab-group>
+                        <mat-tab label="Categories">
+                            <mat-list role="list">
+                                <mat-list-item *ngFor="let item of this.dataFromVision.categories">{{item.name}}</mat-list-item>
+                            </mat-list>
+                        </mat-tab>
+                        <mat-tab label="Adult">
+                            <mat-list role="list">
+                                <mat-list-item>It's adult content: {{this.dataFromVision.adult.isAdultContent}}</mat-list-item>
+                                <mat-list-item>It's racy content: {{this.dataFromVision.adult.isRacyContent}}</mat-list-item>
+                            </mat-list>
+                        </mat-tab>
+                        <mat-tab label="Description">
+                            <mat-list role="list">
+                                <mat-list-item >Tags: {{this.dataFromVision.description.tags.length}}</mat-list-item>
+                                <mat-list-item *ngFor="let item of this.dataFromVision.description.captions">caption: {{item.text}}</mat-list-item>
+
+                            </mat-list>
+                        </mat-tab>
+                    </mat-tab-group>        
+                </mat-grid-tile>
+                <mat-grid-tile [colspan]="2">
+                    <mat-tab-group>
+                        <mat-tab label="Color"> Content 3 </mat-tab>    
+                        <mat-tab label="Image Type"> Content 3 </mat-tab>
+                        <mat-tab label="Tags"> Content 3 </mat-tab>    
+                        <mat-tab label="Faces"> Content 3 </mat-tab>
+                        <mat-tab label="Objects"> Content 3 </mat-tab>
+                        <mat-tab label="Brands"> Content 3 </mat-tab>
+                        <mat-tab label="Meta Data"> Content 3 </mat-tab>
+                    </mat-tab-group>
+                </mat-grid-tile>
+        </div>
+        <div *ngIf="!this.dataFromVision">
+            <mat-grid-tile>
+                <mat-spinner></mat-spinner>
+            </mat-grid-tile>
+        </div>
+      </mat-grid-list>
+</div>
