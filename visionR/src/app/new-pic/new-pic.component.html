@@ -1,1 +1,4 @@
-<p>new-pic works!</p>
+<mat-form-field class="example-full-width">
+    <input [(ngModel)]="url" matInput placeholder="Enter the url of the picture here">
+</mat-form-field>
+<button mat-raised-button color="primary" class="example-full-width" (click)="addPicture()">Add it!</button>
