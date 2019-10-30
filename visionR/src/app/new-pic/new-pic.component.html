@@ -1,51 +1,81 @@
-<mat-form-field class="example-full-width">
-    <input [(ngModel)]="url" matInput placeholder="Enter the url of the picture here">
-</mat-form-field>
-<button mat-raised-button color="primary" class="example-full-width" (click)="addPicture()">Add it!</button>
+<div *ngIf="!this.lastUrl">
+    <mat-form-field class="example-full-width">
+        <input [(ngModel)]="url" matInput placeholder="Enter the url of the picture here">
+    </mat-form-field>
+    <button mat-raised-button color="primary" class="example-full-width" (click)="addPicture()">Add it!</button>
+</div>
 <div *ngIf="this.lastUrl">
-    <mat-grid-list cols="2" rowHeight="2:1">
-        <mat-grid-tile>
-            <img style="width: 60%;" [src]="this.lastUrl">
-        </mat-grid-tile>
+    <img style="width: 40%;" class="center" [src]="this.lastUrl">
+    <mat-spinner *ngIf="!this.dataFromVision"></mat-spinner>
         <div *ngIf="this.dataFromVision">
-            <mat-grid-tile>
-                    <mat-tab-group>
-                        <mat-tab label="Categories">
-                            <mat-list role="list">
-                                <mat-list-item *ngFor="let item of this.dataFromVision.categories">{{item.name}}</mat-list-item>
-                            </mat-list>
-                        </mat-tab>
-                        <mat-tab label="Adult">
-                            <mat-list role="list">
-                                <mat-list-item>It's adult content: {{this.dataFromVision.adult.isAdultContent}}</mat-list-item>
-                                <mat-list-item>It's racy content: {{this.dataFromVision.adult.isRacyContent}}</mat-list-item>
-                            </mat-list>
-                        </mat-tab>
-                        <mat-tab label="Description">
-                            <mat-list role="list">
-                                <mat-list-item >Tags: {{this.dataFromVision.description.tags.length}}</mat-list-item>
-                                <mat-list-item *ngFor="let item of this.dataFromVision.description.captions">caption: {{item.text}}</mat-list-item>
-
-                            </mat-list>
-                        </mat-tab>
-                    </mat-tab-group>        
-                </mat-grid-tile>
-                <mat-grid-tile [colspan]="2">
-                    <mat-tab-group>
-                        <mat-tab label="Color"> Content 3 </mat-tab>    
-                        <mat-tab label="Image Type"> Content 3 </mat-tab>
-                        <mat-tab label="Tags"> Content 3 </mat-tab>    
-                        <mat-tab label="Faces"> Content 3 </mat-tab>
-                        <mat-tab label="Objects"> Content 3 </mat-tab>
-                        <mat-tab label="Brands"> Content 3 </mat-tab>
-                        <mat-tab label="Meta Data"> Content 3 </mat-tab>
-                    </mat-tab-group>
-                </mat-grid-tile>
+        <mat-tab-group>
+            <mat-tab label="Categories">
+                <mat-list role="list">
+                    <mat-list-item *ngFor="let item of this.dataFromVision.categories">{{item.name}}</mat-list-item>
+                </mat-list>
+            </mat-tab>
+            <mat-tab label="Adult">
+                <mat-list role="list">
+                    <mat-list-item>It's adult content: {{this.dataFromVision.adult.isAdultContent}}</mat-list-item>
+                    <mat-list-item>It's racy content: {{this.dataFromVision.adult.isRacyContent}}</mat-list-item>
+                </mat-list>
+            </mat-tab>
+            <mat-tab label="Description">
+                <mat-list role="list">
+                    <mat-list-item >Tags: {{this.dataFromVision.description.tags.length}}</mat-list-item>
+                    <mat-list-item *ngFor="let item of this.dataFromVision.description.captions">caption: {{item.text}}</mat-list-item>
+                </mat-list>
+            </mat-tab>
+            <mat-tab label="Color">
+                <mat-list role="list">
+                    <mat-list-item >Dominant Color Foreground: {{this.dataFromVision.color.dominantColorForeground}}</mat-list-item>
+                    <mat-list-item >Dominant Color Background: {{this.dataFromVision.color.dominantColorBackground}}</mat-list-item>
+                    <mat-list-item >Dominant colors: <p *ngFor="let item of this.dataFromVision.color.dominantColors">- {{item}} </p></mat-list-item>
+                    <mat-list-item >Accent Color:  <div class="color-box" [ngStyle]="{'background-color': '#' + dataFromVision.color.accentColor}"></div></mat-list-item>
+                    <mat-list-item >Is the image black & white ?: {{this.dataFromVision.color.isBwImg}}</mat-list-item>
+    
+                </mat-list>
+            </mat-tab>    
+            <mat-tab label="Image Type">
+                <mat-list role="list">
+                    <mat-list-item >Clip Art Type: {{this.dataFromVision.imageType.clipArtType == 0 ? "Non-clip-art" : this.dataFromVision.imageType.clipArtType == 1 ? "Ambiguous":this.dataFromVision.imageType.clipArtType == 2 ? "Normal-clip-art":"Good-clip-art"}}</mat-list-item>
+                    <mat-list-item >Line Drawing: {{this.dataFromVision.imageType.lineDrawingType == 1 ? "Yes" : "No"}}</mat-list-item>
+                </mat-list>
+            </mat-tab>
+            <mat-tab label="Tags">
+                <mat-list role="list">
+                    <mat-list-item *ngFor="let item of this.dataFromVision.tags">Name: {{item.name}} | Confidence: {{item.confidence}}</mat-list-item>
+                </mat-list>
+            </mat-tab>    
+            <mat-tab label="Faces">
+                <mat-list role="list">
+                    <mat-list-item *ngFor="let item of this.dataFromVision.faces">Face: {{item.age}} years old | {{item.gender}}</mat-list-item>
+                </mat-list>
+            </mat-tab>
+            <mat-tab label="Objects">
+                <mat-list role="list">
+                    <mat-list-item *ngFor="let item of this.dataFromVision.objects">Object: {{item.object}} | Confidence: {{item.confidence}}</mat-list-item>
+                </mat-list>
+            </mat-tab>
+            <mat-tab label="Brands">
+                <mat-list role="list">
+                    <mat-list-item *ngFor="let item of this.dataFromVision.brands">Brand: {{item.name}} | Confidence: {{item.confidence}}</mat-list-item>
+                </mat-list>
+            </mat-tab>
+            <mat-tab label="Meta Data">
+                <mat-list role="list">
+                    <mat-list-item>Height: {{this.dataFromVision.metadata.height}}</mat-list-item>
+                    <mat-list-item>width: {{this.dataFromVision.metadata.width}}</mat-list-item>
+                    <mat-list-item>format: {{this.dataFromVision.metadata.format}}</mat-list-item>
+                </mat-list>
+            </mat-tab>
+        </mat-tab-group>
+        <div *ngIf="this.isAnimal">
+            <button mat-raised-button color="primary" class="example-full-width" (click)="addToTheGallery()">Add to the gallery</button>
         </div>
-        <div *ngIf="!this.dataFromVision">
-            <mat-grid-tile>
-                <mat-spinner></mat-spinner>
-            </mat-grid-tile>
+        <div *ngIf="!this.isAnimal">
+            <button mat-raised-button disabled class="example-full-width">Add to the gallery</button>
         </div>
-      </mat-grid-list>
+        <button mat-raised-button color="warn" class="example-full-width" (click)="cancel()">Cancel</button>
+    </div>
 </div>

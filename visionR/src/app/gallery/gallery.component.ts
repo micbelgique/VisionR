@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { BackendService } from '../services/backend.service';
 
 @Component({
   selector: 'app-gallery',
@@ -7,9 +8,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class GalleryComponent implements OnInit {
 
-  constructor() { }
+  public pictures;
+  constructor(
+    private backendService: BackendService
+  ) { }
 
   ngOnInit() {
+    this.backendService.getAllPictures().subscribe(
+      (result) => {
+        this.pictures = result;
+      }
+    );
   }
 
 }
