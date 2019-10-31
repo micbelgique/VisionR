@@ -8,16 +8,25 @@ import { GalleryComponent } from './gallery/gallery.component';
 import { NewPicComponent } from './new-pic/new-pic.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
-  MatCardModule, MatInputModule, MatButtonModule, MatTabsModule, MatGridListModule, MatListModule, MatProgressSpinnerModule, MatDialogModule
+  MatCardModule,
+  MatInputModule,
+  MatButtonModule,
+  MatTabsModule,
+  MatGridListModule,
+  MatListModule,
+  MatProgressSpinnerModule,
+  MatBottomSheetModule
  } from '@angular/material';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { BottomSheetDetailsComponent } from './bottom-sheet-details/bottom-sheet-details.component';
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     GalleryComponent,
-    NewPicComponent
+    NewPicComponent,
+    BottomSheetDetailsComponent
   ],
   imports: [
     BrowserModule,
@@ -32,9 +41,12 @@ import { HttpClientModule } from '@angular/common/http';
     MatGridListModule,
     MatListModule,
     MatProgressSpinnerModule,
-    MatDialogModule
+    MatBottomSheetModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [
+    BottomSheetDetailsComponent
+  ]
 })
 export class AppModule { }
