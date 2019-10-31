@@ -15,18 +15,21 @@ import {
   MatGridListModule,
   MatListModule,
   MatProgressSpinnerModule,
-  MatBottomSheetModule
+  MatBottomSheetModule,
+  MatExpansionModule
  } from '@angular/material';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BottomSheetDetailsComponent } from './bottom-sheet-details/bottom-sheet-details.component';
+import { SettingsComponent } from './settings/settings.component';
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     GalleryComponent,
     NewPicComponent,
-    BottomSheetDetailsComponent
+    BottomSheetDetailsComponent,
+    SettingsComponent
   ],
   imports: [
     BrowserModule,
@@ -41,7 +44,8 @@ import { BottomSheetDetailsComponent } from './bottom-sheet-details/bottom-sheet
     MatGridListModule,
     MatListModule,
     MatProgressSpinnerModule,
-    MatBottomSheetModule
+    MatBottomSheetModule,
+    MatExpansionModule
   ],
   providers: [],
   bootstrap: [AppComponent],
