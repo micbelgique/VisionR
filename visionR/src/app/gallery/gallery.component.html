@@ -1,0 +1,5 @@
+<mat-grid-list cols="4" rowHeight="4:1">
+    <mat-grid-tile *ngFor="let item of this.pictures">
+        <img src="{{item.url}}" height="100%" (click)="this.getDetails(item.id)">
+    </mat-grid-tile>
+</mat-grid-list>
