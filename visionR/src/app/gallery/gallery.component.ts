@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { BackendService } from '../services/backend.service';
 import { MatBottomSheet } from '@angular/material';
 import { BottomSheetDetailsComponent } from '../bottom-sheet-details/bottom-sheet-details.component';
+import { CategoryGallery } from '../model/category-gallery';
 
 @Component({
   selector: 'app-gallery',
@@ -11,15 +12,58 @@ import { BottomSheetDetailsComponent } from '../bottom-sheet-details/bottom-shee
 export class GalleryComponent implements OnInit {
 
   public pictures;
+  public category: string;
+  public categoryGalleries: CategoryGallery[];
   constructor(
     private backendService: BackendService,
     private bottomSheet: MatBottomSheet
-  ) { }
+  ) {
+    this.category = localStorage.getItem('Category');
+    this.pictures = [];
+    this.categoryGalleries = [];
+   }
 
   ngOnInit() {
     this.backendService.getAllPictures().subscribe(
       (result) => {
-        this.pictures = result;
+        result.forEach(e => {
+          if (e.visionResult.categories.find(x => x.name.includes(this.category))
+          || e.visionResult.tags.find(x => x.name.includes(this.category))) {
+            if (e.visionResult.categories.length > 0) {
+              const cat = e.visionResult.categories.find(y => y.name.includes(this.category)).name;
+              const subCategory = cat.split('_')[1];
+              if (this.categoryGalleries.find(x => x.name === subCategory) === undefined && subCategory) {
+                this.categoryGalleries.push({
+                  name: subCategory,
+                  listImages: []
+                });
+                this.categoryGalleries.find(x => x.name === subCategory).listImages.push(e);
+              } else if (subCategory) {
+                this.categoryGalleries.find(x => x.name === subCategory).listImages.push(e);
+              } else {
+                if (this.categoryGalleries.find(x => x.name === 'uncategorized') === undefined) {
+                  this.categoryGalleries.push({
+                    name: 'uncategorized',
+                    listImages: []
+                  });
+                }
+                this.categoryGalleries.find(x => x.name === 'uncategorized').listImages.push(e);
+              }
+              console.log(
+                this.categoryGalleries
+              );
+            } else {
+              if (this.categoryGalleries.find(x => x.name === 'uncategorized') === undefined) {
+                this.categoryGalleries.push({
+                  name: 'uncategorized',
+                  listImages: []
+                });
+              }
+              this.categoryGalleries.find(x => x.name === 'uncategorized').listImages.push(e);
+            }
+            this.pictures.push(e);
+          }
+        });
       }
     );
   }

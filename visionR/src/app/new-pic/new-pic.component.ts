@@ -12,12 +12,16 @@ export class NewPicComponent implements OnInit {
   public url: string;
   public lastUrl: string;
   public dataFromVision: VisionResult;
-  public isAnimal: boolean;
+  public isCategory: boolean;
+  public isAdult: boolean;
+  public category: string;
   constructor(
     private computerVisionService: ComputerVisionService,
     private backendService: BackendService
   ) {
-    this.isAnimal = false;
+    this.isCategory = false;
+    this.isAdult = true;
+    this.category = localStorage.getItem('Category');
    }
 
   ngOnInit() {
@@ -25,13 +29,20 @@ export class NewPicComponent implements OnInit {
   addPicture() {
     this.computerVisionService.getDataOfPicture(this.url).subscribe(
       (result) => {
-        console.log(result);
         this.dataFromVision = result;
-        this.dataFromVision.tags.forEach(element => {
-          if (element.name === 'animal') {
-            this.isAnimal = true;
+        this.dataFromVision.categories.forEach( e => {
+          if (e.name.includes(this.category)) {
+            this.isCategory = true;
           }
         });
+        if (!this.isCategory) {
+          this.dataFromVision.tags.forEach(e => {
+            if (e.name === this.category) {
+              this.isCategory = true;
+            }
+          });
+        }
+        this.isAdult = this.dataFromVision.adult.isAdultContent ? true : this.dataFromVision.adult.isRacyContent ? true : false;
       }
     );
     this.lastUrl = this.url;
@@ -49,5 +60,6 @@ export class NewPicComponent implements OnInit {
   cancel() {
     this.lastUrl = null;
     this.dataFromVision = null;
+    this.isCategory = false;
   }
 }

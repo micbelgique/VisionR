@@ -16,12 +16,15 @@ import {
   MatListModule,
   MatProgressSpinnerModule,
   MatBottomSheetModule,
-  MatExpansionModule
+  MatExpansionModule,
+  MatSelectModule
  } from '@angular/material';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BottomSheetDetailsComponent } from './bottom-sheet-details/bottom-sheet-details.component';
 import { SettingsComponent } from './settings/settings.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 @NgModule({
   declarations: [
     AppComponent,
@@ -45,7 +48,9 @@ import { SettingsComponent } from './settings/settings.component';
     MatListModule,
     MatProgressSpinnerModule,
     MatBottomSheetModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatSelectModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [],
   bootstrap: [AppComponent],

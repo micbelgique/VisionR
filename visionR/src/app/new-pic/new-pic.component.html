@@ -70,10 +70,10 @@
                 </mat-list>
             </mat-tab>
         </mat-tab-group>
-        <div *ngIf="this.isAnimal">
+        <div *ngIf="this.isCategory">
             <button mat-raised-button color="primary" class="example-full-width" (click)="addToTheGallery()">Add to the gallery</button>
         </div>
-        <div *ngIf="!this.isAnimal">
+        <div *ngIf="!this.isCategory">
             <button mat-raised-button disabled class="example-full-width">Add to the gallery</button>
         </div>
         <button mat-raised-button color="warn" class="example-full-width" (click)="cancel()">Cancel</button>

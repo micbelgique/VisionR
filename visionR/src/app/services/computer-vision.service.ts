@@ -22,7 +22,6 @@ export class ComputerVisionService {
             'Ocp-Apim-Subscription-Key': this.key
         });
         const body = {url};
-        console.log(body);
         return this.httpClient.post<VisionResult>(this.endpoint +
             '/vision/v2.0/analyze?visualFeatures=Adult,Brands,Categories,Color,Description,Faces,ImageType,Objects,Tags&language=en',
             body,
