@@ -103,12 +103,17 @@ THE SOFTWARE.
 
 @angular/material/progress-spinner
 
+@angular/material/select
+
 @angular/material/tabs
 
 @angular/platform-browser
 MIT
 
 @angular/router
+MIT
+
+@angular/service-worker
 MIT
 
 core-js
