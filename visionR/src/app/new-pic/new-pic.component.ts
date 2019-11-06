@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ComputerVisionService } from '../services/computer-vision.service';
 import { VisionResult } from '../model/vision-result';
 import { BackendService } from '../services/backend.service';
+import { UpdateService } from '../services/update.service';
 
 @Component({
   selector: 'app-new-pic',
@@ -12,12 +13,17 @@ export class NewPicComponent implements OnInit {
   public url: string;
   public lastUrl: string;
   public dataFromVision: VisionResult;
-  public isAnimal: boolean;
+  public isCategory: boolean;
+  public isAdult: boolean;
+  public category: string;
   constructor(
     private computerVisionService: ComputerVisionService,
-    private backendService: BackendService
+    private backendService: BackendService,
+    private updateService: UpdateService
   ) {
-    this.isAnimal = false;
+    this.isCategory = false;
+    this.isAdult = true;
+    this.category = localStorage.getItem('Category');
    }
 
   ngOnInit() {
@@ -25,13 +31,20 @@ export class NewPicComponent implements OnInit {
   addPicture() {
     this.computerVisionService.getDataOfPicture(this.url).subscribe(
       (result) => {
-        console.log(result);
         this.dataFromVision = result;
-        this.dataFromVision.tags.forEach(element => {
-          if (element.name === 'animal') {
-            this.isAnimal = true;
+        this.dataFromVision.categories.forEach( e => {
+          if (e.name.includes(this.category)) {
+            this.isCategory = true;
           }
         });
+        if (!this.isCategory) {
+          this.dataFromVision.tags.forEach(e => {
+            if (e.name === this.category) {
+              this.isCategory = true;
+            }
+          });
+        }
+        this.isAdult = this.dataFromVision.adult.isAdultContent ? true : this.dataFromVision.adult.isRacyContent ? true : false;
       }
     );
     this.lastUrl = this.url;
@@ -42,6 +55,7 @@ export class NewPicComponent implements OnInit {
     this.backendService.sendPicture(this.lastUrl, this.dataFromVision).subscribe(
       (result) => {
         console.log(result);
+        this.updateService.updateGallery(true);
       }
     );
     this.cancel();
@@ -49,5 +63,6 @@ export class NewPicComponent implements OnInit {
   cancel() {
     this.lastUrl = null;
     this.dataFromVision = null;
+    this.isCategory = false;
   }
 }

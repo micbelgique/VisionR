@@ -1,5 +1,9 @@
-<mat-grid-list cols="4" rowHeight="4:1">
-    <mat-grid-tile *ngFor="let item of this.pictures">
-        <img src="{{item.url}}" height="100%" (click)="this.getDetails(item.id)">
-    </mat-grid-tile>
-</mat-grid-list>
+<mat-tab-group>
+    <mat-tab *ngFor="let item of this.categoryGalleries" label="{{item.name}}">
+        <mat-grid-list cols="3" rowHeight="3:1">
+            <mat-grid-tile *ngFor="let i of this.item.listImages">
+                <img mat-card-image src="{{i.url}}" (click)="this.getDetails(i.id)" height="100%"  alt="{{i.visionResult.description.captions[0].text}}">
+            </mat-grid-tile>
+        </mat-grid-list>
+    </mat-tab>
+</mat-tab-group>    
