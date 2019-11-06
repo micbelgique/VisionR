@@ -3,6 +3,7 @@ import { BackendService } from '../services/backend.service';
 import { MatBottomSheet } from '@angular/material';
 import { BottomSheetDetailsComponent } from '../bottom-sheet-details/bottom-sheet-details.component';
 import { CategoryGallery } from '../model/category-gallery';
+import { UpdateService } from '../services/update.service';
 
 @Component({
   selector: 'app-gallery',
@@ -16,11 +17,19 @@ export class GalleryComponent implements OnInit {
   public categoryGalleries: CategoryGallery[];
   constructor(
     private backendService: BackendService,
-    private bottomSheet: MatBottomSheet
+    private bottomSheet: MatBottomSheet,
+    private updateService: UpdateService
   ) {
     this.category = localStorage.getItem('Category');
     this.pictures = [];
     this.categoryGalleries = [];
+    this.updateService.updatePicture$.subscribe(
+      result => {
+        if (result) {
+          window.location.reload();
+        }
+      }
+    );
    }
 
   ngOnInit() {
@@ -30,7 +39,8 @@ export class GalleryComponent implements OnInit {
           if (e.visionResult.categories.find(x => x.name.includes(this.category))
           || e.visionResult.tags.find(x => x.name.includes(this.category))) {
             if (e.visionResult.categories.length > 0) {
-              const cat = e.visionResult.categories.find(y => y.name.includes(this.category)).name;
+              const categoryFull = e.visionResult.categories.find(y => y.name.includes(this.category));
+              const cat = categoryFull !== undefined ? categoryFull.name : '';
               const subCategory = cat.split('_')[1];
               if (this.categoryGalleries.find(x => x.name === subCategory) === undefined && subCategory) {
                 this.categoryGalleries.push({
@@ -49,9 +59,6 @@ export class GalleryComponent implements OnInit {
                 }
                 this.categoryGalleries.find(x => x.name === 'uncategorized').listImages.push(e);
               }
-              console.log(
-                this.categoryGalleries
-              );
             } else {
               if (this.categoryGalleries.find(x => x.name === 'uncategorized') === undefined) {
                 this.categoryGalleries.push({

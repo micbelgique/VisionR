@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ComputerVisionService } from '../services/computer-vision.service';
 import { VisionResult } from '../model/vision-result';
 import { BackendService } from '../services/backend.service';
+import { UpdateService } from '../services/update.service';
 
 @Component({
   selector: 'app-new-pic',
@@ -17,7 +18,8 @@ export class NewPicComponent implements OnInit {
   public category: string;
   constructor(
     private computerVisionService: ComputerVisionService,
-    private backendService: BackendService
+    private backendService: BackendService,
+    private updateService: UpdateService
   ) {
     this.isCategory = false;
     this.isAdult = true;
@@ -53,6 +55,7 @@ export class NewPicComponent implements OnInit {
     this.backendService.sendPicture(this.lastUrl, this.dataFromVision).subscribe(
       (result) => {
         console.log(result);
+        this.updateService.updateGallery(true);
       }
     );
     this.cancel();
